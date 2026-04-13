@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 
 function Home() {
   const [projects, setProjects] = useState([]);
-
-  // ADDED: STORE COMMENT PER PROJECT (FIXES SHARED INPUT BUG)
   const [commentInputs, setCommentInputs] = useState({});
 
-  // ADDED: HANDLE INPUT CHANGE PER PROJECT
+  const token = localStorage.getItem("token");
+
   const handleCommentChange = (projectId, value) => {
     setCommentInputs((prev) => ({
       ...prev,
@@ -14,12 +13,10 @@ function Home() {
     }));
   };
 
-  // ADDED: SEND COMMENT TO BACKEND
   const addComment = async (projectId) => {
-    const token = localStorage.getItem("token");
+    if (!token) return;
 
     const text = commentInputs[projectId];
-
     if (!text) return;
 
     await fetch(`http://localhost:5000/projects/${projectId}/comments`, {
@@ -31,13 +28,27 @@ function Home() {
       body: JSON.stringify({ text }),
     });
 
-    // ADDED: CLEAR ONLY THAT PROJECT'S INPUT
     setCommentInputs((prev) => ({
       ...prev,
       [projectId]: "",
     }));
 
-    // refresh feed
+    const res = await fetch("http://localhost:5000/projects");
+    const data = await res.json();
+    setProjects(data);
+  };
+
+  const raiseHand = async (projectId) => {
+    if (!token) return;
+
+    await fetch(`http://localhost:5000/projects/${projectId}/collaborate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     const res = await fetch("http://localhost:5000/projects");
     const data = await res.json();
     setProjects(data);
@@ -46,13 +57,19 @@ function Home() {
   useEffect(() => {
     fetch("http://localhost:5000/projects")
       .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-      });
+      .then((data) => setProjects(data));
   }, []);
+
+  // ADDED: FILTER COMPLETED PROJECTS
+  const completedProjects = projects.filter(
+    (p) => p.stage === "completed"
+  );
 
   return (
     <div style={{ padding: "20px" }}>
+      {/* ===================== */}
+      {/* LIVE FEED SECTION */}
+      {/* ===================== */}
       <h2>Live Feed</h2>
 
       {projects.length === 0 ? (
@@ -69,17 +86,17 @@ function Home() {
           >
             <h3>{project.title}</h3>
             <p>{project.description}</p>
+
+            <p><strong>Stage:</strong> {project.stage}</p>
+            <p><strong>Support:</strong> {project.support}</p>
+            <p><strong>By:</strong> {project.userEmail}</p>
+
             <p>
-              <strong>Stage:</strong> {project.stage}
-            </p>
-            <p>
-              <strong>Support:</strong> {project.support}
-            </p>
-            <p>
-              <strong>By:</strong> {project.userEmail}
+              <strong>Collaborators:</strong>{" "}
+              {project.collaborators?.length || 0}
             </p>
 
-            {/* ADDED: COMMENTS DISPLAY */}
+            {/* COMMENTS */}
             <div style={{ marginTop: "10px" }}>
               <h4>Comments</h4>
 
@@ -93,7 +110,6 @@ function Home() {
                 <p>No comments yet</p>
               )}
 
-              {/* ADDED: COMMENT INPUT (PER PROJECT FIXED) */}
               <input
                 type="text"
                 value={commentInputs[project.id] || ""}
@@ -103,10 +119,60 @@ function Home() {
                 placeholder="Add a comment..."
               />
 
-              <button onClick={() => addComment(project.id)}>
+              <button onClick={() => addComment(project.id)} disabled={!token}>
                 Submit Comment
               </button>
+
+              <button
+                onClick={() => raiseHand(project.id)}
+                disabled={!token}
+                style={{
+                  marginTop: "10px",
+                  background: "green",
+                  color: "black",
+                  border: "none",
+                  padding: "5px",
+                }}
+              >
+                Raise Hand 🤝
+              </button>
             </div>
+          </div>
+        ))
+      )}
+
+      {/* ===================== */}
+      {/* CELEBRATION WALL */}
+      {/* ===================== */}
+      <hr style={{ margin: "30px 0" }} />
+
+      <h2 style={{ color: "green" }}>🎉 Celebration Wall</h2>
+
+      {completedProjects.length === 0 ? (
+        <p>No completed projects yet</p>
+      ) : (
+        completedProjects.map((project) => (
+          <div
+            key={project.id}
+            style={{
+              border: "2px solid green",
+              margin: "10px",
+              padding: "10px",
+              background: "black",
+              color: "white",
+            }}
+          >
+            <h3>🏆 {project.title}</h3>
+            <p>{project.description}</p>
+
+            <p>
+              <strong>Completed by:</strong> {project.userEmail}
+            </p>
+
+            <p>
+              <strong>Collaborators:</strong>{" "}
+              {project.collaborators?.length || 0}
+            </p>
           </div>
         ))
       )}
