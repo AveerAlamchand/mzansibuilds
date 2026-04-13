@@ -8,38 +8,38 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // FIXED: removed nested function + cleaned logic
   const handleSubmit = async (e) => {
-    e.preventDefault();
+      e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      try {
+        const response = await fetch("http://localhost:5000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      // FIXED: handle error properly
-      if (!response.ok) {
-        setMessage(data.message || "Login failed");
-        return;
+        if (!response.ok) {
+          setMessage(data.message || "Login failed");
+          return;
+        }
+
+        // ADDED: store token
+        localStorage.setItem("token", data.token);
+
+        // ADDED: notify navbar manually (IMPORTANT FIX)
+        window.dispatchEvent(new Event("authChange"));
+
+        setMessage("Login successful!");
+
+        navigate("/home");
+      } catch (error) {
+        setMessage("Server error. Please try again.");
+        console.error(error);
       }
-
-      // ADDED: store JWT token (IMPORTANT FOR NEXT STEPS)
-      localStorage.setItem("token", data.token);
-
-      setMessage("Login successful!");
-
-      // ADDED: redirect after login
-      navigate("/home");
-    } catch (error) {
-      setMessage("Server error. Please try again.");
-      console.error(error);
-    }
   };
 
   return (

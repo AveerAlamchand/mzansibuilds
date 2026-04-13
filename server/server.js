@@ -104,6 +104,7 @@ app.post("/projects", authenticateToken, (req, res) => {
     description,
     stage,
     support,
+    comments: [], //COMMENTS FOR EACH PROJECT
   };
 
   projects.push(newProject);
@@ -120,7 +121,30 @@ app.get("/projects", (req, res) => {
   res.json(projects);
 });
 
+// ADDED: ADD COMMENT TO A PROJECT (COLLABORATION FEATURE)
+app.post("/projects/:id/comments", authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
 
+  const project = projects.find((p) => p.id === parseInt(id));
+
+  if (!project) {
+    return res.status(404).json({ message: "Project not found" });
+  }
+
+  const newComment = {
+    userEmail: req.user.email,
+    text,
+    timestamp: new Date().toISOString(),
+  };
+
+  project.comments.push(newComment);
+
+  res.json({
+    message: "Comment added",
+    comment: newComment,
+  });
+});
 
 const PORT = 5000;
 
