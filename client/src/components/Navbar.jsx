@@ -17,6 +17,10 @@ function Navbar() {
         <Link to="/register" style={{ color: "green" }}>
           Register
         </Link>
+        
+        <Link to="/create" style={{ color: "green", marginRight: "10px" }}>
+          Create Project
+        </Link>
       </div>
     </nav>
   );

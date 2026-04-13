@@ -8,6 +8,8 @@ app.use(express.json());
 
 const users = [];
 
+const projects = [];
+
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -47,6 +49,30 @@ app.post("/register", (req, res) => {
   console.log("Users:", users);
 
   res.json({ message: "User registered successfully" });
+});
+
+//Projects route:
+app.post("/projects", (req, res) => {
+  const { title, description, stage, support } = req.body;
+
+  const newProject = {
+    id: projects.length + 1,
+    title,
+    description,
+    stage,
+    support,
+  };
+
+  projects.push(newProject);
+
+  console.log("Projects:", projects);
+
+  res.json({ message: "Project created", project: newProject });
+});
+
+
+app.get("/projects", (req, res) => {
+  res.json(projects);
 });
 
 const PORT = 5000;
