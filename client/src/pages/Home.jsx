@@ -24,6 +24,7 @@ function Home() {
             <p>{project.description}</p>
             <p><strong>Stage:</strong> {project.stage}</p>
             <p><strong>Support:</strong> {project.support}</p>
+            <p><strong>By:</strong> {project.userEmail}</p>
           </div>
         ))
       )}

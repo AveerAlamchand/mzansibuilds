@@ -1,15 +1,18 @@
 import { useState } from "react";
-    
+import { useNavigate } from "react-router-dom";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
+
+  // FIXED: removed nested function + cleaned logic
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-
+    try {
       const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
@@ -20,11 +23,23 @@ function Login() {
 
       const data = await response.json();
 
-      setMessage(data.message);
-    };
+      // FIXED: handle error properly
+      if (!response.ok) {
+        setMessage(data.message || "Login failed");
+        return;
+      }
 
-    const data = await response.json();
-    console.log(data);
+      // ADDED: store JWT token (IMPORTANT FOR NEXT STEPS)
+      localStorage.setItem("token", data.token);
+
+      setMessage("Login successful!");
+
+      // ADDED: redirect after login
+      navigate("/home");
+    } catch (error) {
+      setMessage("Server error. Please try again.");
+      console.error(error);
+    }
   };
 
   return (
@@ -54,6 +69,7 @@ function Login() {
           Login
         </button>
       </form>
+
       {message && <p>{message}</p>}
     </div>
   );

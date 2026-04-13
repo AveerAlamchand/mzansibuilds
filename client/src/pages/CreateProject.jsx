@@ -10,10 +10,16 @@ function CreateProject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // ADDED: GET TOKEN FROM LOGIN (SECURITY REQUIREMENT)
+    const token = localStorage.getItem("token");
+
     const response = await fetch("http://localhost:5000/projects", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+
+        // ADDED: SEND TOKEN TO BACKEND
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ title, description, stage, support }),
     });
