@@ -1,19 +1,27 @@
 import { useState } from "react";
-
+    
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [message, setMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      setMessage(data.message);
+    };
 
     const data = await response.json();
     console.log(data);
@@ -46,6 +54,7 @@ function Login() {
           Login
         </button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
 }
