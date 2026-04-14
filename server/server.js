@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//ARRAYS TO STORE USERS AND PROJECTS IN-MEMORY
 const users = [];
 const projects = [];
 
@@ -17,9 +18,7 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// =========================
-// AUTH MIDDLEWARE
-// =========================
+// AUTH MIDDLEWARE USING JWT
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -38,9 +37,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// =========================
-// REGISTER
-// =========================
+//REGISTER ENDPOINT
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
 
@@ -61,9 +58,7 @@ app.post("/register", (req, res) => {
   res.json({ message: "User registered successfully" });
 });
 
-// =========================
-// LOGIN
-// =========================
+// LOGIN ENDPOINT
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -87,9 +82,8 @@ app.post("/login", (req, res) => {
   });
 });
 
-// =========================
-// CREATE PROJECT
-// =========================
+//CREATE PROJECT ENDPOINT
+
 app.post("/projects", authenticateToken, (req, res) => {
   const { title, description, stage, support } = req.body;
 
@@ -103,9 +97,8 @@ app.post("/projects", authenticateToken, (req, res) => {
     stage,
     support,
 
+    //ARRAYS TO STORE COMMENTS AND COLLABORATORS IN-MEMORY
     comments: [],
-
-    // ADDED: RAISE HAND FEATURE
     collaborators: [],
   };
 
@@ -117,16 +110,12 @@ app.post("/projects", authenticateToken, (req, res) => {
   });
 });
 
-// =========================
-// GET PROJECTS
-// =========================
+// GET PROJECTS ENDPOINT
 app.get("/projects", (req, res) => {
   res.json(projects);
 });
 
-// =========================
-// COMMENTS
-// =========================
+// COMMENTS ENDPOINT
 app.post("/projects/:id/comments", authenticateToken, (req, res) => {
   const { id } = req.params;
   const { text } = req.body;
@@ -151,9 +140,7 @@ app.post("/projects/:id/comments", authenticateToken, (req, res) => {
   });
 });
 
-// =========================
-// RAISE HAND (COLLABORATION)
-// =========================
+//RAISE HAND ENDPOINT
 app.post("/projects/:id/collaborate", authenticateToken, (req, res) => {
   const { id } = req.params;
 
@@ -184,9 +171,7 @@ app.post("/projects/:id/collaborate", authenticateToken, (req, res) => {
   });
 });
 
-// =========================
-// START SERVER
-// =========================
+//CODE TO START SERVER ON PORT 5000
 const PORT = 5000;
 
 app.listen(PORT, () => {

@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 function Register() {
+  //USER STATE INFORMATION
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  // ADDED: HANDLE REGISTER SUBMISSION
+  //HANDLE REGISTER SUBMISSION
   const handleSubmit = async (e) => {
     e.preventDefault();
 

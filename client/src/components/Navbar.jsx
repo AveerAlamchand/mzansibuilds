@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 function Navbar() {
   const navigate = useNavigate();
 
-  // ADDED: SINGLE SOURCE OF TRUTH FOR AUTH STATUS
+  //SINGLE SOURCE OF TRUTH FOR AUTH STATUS
   const getToken = () => localStorage.getItem("token");
 
   const [token, setToken] = useState(getToken());
 
-  // ADDED: LISTEN FOR LOGIN AND LOGOUT CHANGES
+  //LISTEN FOR LOGIN AND LOGOUT CHANGES
   useEffect(() => {
     const syncAuth = () => {
       setToken(getToken());
@@ -24,7 +24,7 @@ function Navbar() {
     };
   }, []);
 
-  // ADDED: LOGOUT HANDLER
+  //LOGOUT HANDLER
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);

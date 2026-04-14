@@ -7,14 +7,14 @@ function Home() {
 
   const token = localStorage.getItem("token");
 
-  // ADDED: FETCH PROJECTS ON PAGE LOAD
+//FETCH PROJECTS ON PAGE LOAD FROM OUR ENDPOINTS
   useEffect(() => {
     fetch("http://localhost:5000/projects")
       .then((res) => res.json())
       .then((data) => setProjects(data));
   }, []);
 
-  // ADDED: HANDLE COMMENT INPUT PER PROJECT
+  //HANDLE COMMENT INPUT PER PROJECT
   const handleCommentChange = (projectId, value) => {
     setCommentInputs((prev) => ({
       ...prev,
@@ -22,7 +22,7 @@ function Home() {
     }));
   };
 
-  // ADDED: ADD COMMENT
+  //ADD COMMENT
   const addComment = async (projectId) => {
     if (!token) return;
 
@@ -48,7 +48,7 @@ function Home() {
     setProjects(data);
   };
 
-  // ADDED: RAISE HAND
+  //RAISE HAND
   const raiseHand = async (projectId) => {
     if (!token) return;
 
@@ -65,7 +65,7 @@ function Home() {
     setProjects(data);
   };
 
-  // ADDED: FILTER COMPLETED PROJECTS FOR CELEBRATION WALL
+  //FILTER COMPLETED PROJECTS FOR CELEBRATION WALL
   const completedProjects = projects.filter((p) => p.stage === "completed");
 
   return (
