@@ -27,7 +27,7 @@ function CreateProject() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container page">
       <div className="card">
         <h2>Create Project</h2>
 

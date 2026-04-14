@@ -6,6 +6,14 @@ function Home() {
 
   const token = localStorage.getItem("token");
 
+  // ADDED: FETCH PROJECTS ON PAGE LOAD
+  useEffect(() => {
+    fetch("http://localhost:5000/projects")
+      .then((res) => res.json())
+      .then((data) => setProjects(data));
+  }, []);
+
+  // ADDED: HANDLE COMMENT INPUT PER PROJECT
   const handleCommentChange = (projectId, value) => {
     setCommentInputs((prev) => ({
       ...prev,
@@ -13,6 +21,7 @@ function Home() {
     }));
   };
 
+  // ADDED: ADD COMMENT
   const addComment = async (projectId) => {
     if (!token) return;
 
@@ -38,6 +47,7 @@ function Home() {
     setProjects(data);
   };
 
+  // ADDED: RAISE HAND
   const raiseHand = async (projectId) => {
     if (!token) return;
 
@@ -54,60 +64,53 @@ function Home() {
     setProjects(data);
   };
 
-  useEffect(() => {
-    fetch("http://localhost:5000/projects")
-      .then((res) => res.json())
-      .then((data) => setProjects(data));
-  }, []);
-
-  // ADDED: FILTER COMPLETED PROJECTS
-  const completedProjects = projects.filter(
-    (p) => p.stage === "completed"
-  );
+  // ADDED: FILTER COMPLETED PROJECTS FOR CELEBRATION WALL
+  const completedProjects = projects.filter((p) => p.stage === "completed");
 
   return (
-    <div style={{ padding: "20px" }}>
-      {/* ===================== */}
-      {/* LIVE FEED SECTION */}
-      {/* ===================== */}
-      <h2>Live Feed</h2>
+    <div className="container page">
+      <h2 style={{ color: "#00e676" }}>Live Feed</h2>
 
       {projects.length === 0 ? (
         <p>No projects yet</p>
       ) : (
         projects.map((project) => (
-          <div
-            key={project.id}
-            style={{
-              border: "1px solid white",
-              margin: "10px",
-              padding: "10px",
-            }}
-          >
+          <div key={project.id} className="card">
             <h3>{project.title}</h3>
             <p>{project.description}</p>
 
-            <p><strong>Stage:</strong> {project.stage}</p>
-            <p><strong>Support:</strong> {project.support}</p>
-            <p><strong>By:</strong> {project.userEmail}</p>
-
+            <p>
+              <strong>Stage:</strong> {project.stage}
+            </p>
+            <p>
+              <strong>Support:</strong> {project.support}
+            </p>
+            <p>
+              <strong>By:</strong> {project.userEmail}
+            </p>
             <p>
               <strong>Collaborators:</strong>{" "}
               {project.collaborators?.length || 0}
             </p>
 
-            {/* COMMENTS */}
-            <div style={{ marginTop: "10px" }}>
+            <div style={{ marginTop: "15px" }}>
               <h4>Comments</h4>
 
               {project.comments?.length > 0 ? (
                 project.comments.map((c, i) => (
-                  <p key={i}>
+                  <p
+                    key={i}
+                    style={{
+                      borderLeft: "2px solid #00c853",
+                      paddingLeft: "10px",
+                      marginBottom: "8px",
+                    }}
+                  >
                     <strong>{c.userEmail}:</strong> {c.text}
                   </p>
                 ))
               ) : (
-                <p>No comments yet</p>
+                <p style={{ color: "#aaa" }}>No comments yet</p>
               )}
 
               <input
@@ -119,34 +122,20 @@ function Home() {
                 placeholder="Add a comment..."
               />
 
-              <button onClick={() => addComment(project.id)} disabled={!token}>
-                Submit Comment
-              </button>
-
-              <button
-                onClick={() => raiseHand(project.id)}
-                disabled={!token}
-                style={{
-                  marginTop: "10px",
-                  background: "green",
-                  color: "black",
-                  border: "none",
-                  padding: "5px",
-                }}
-              >
-                Raise Hand 🤝
-              </button>
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                  <button onClick={() => addComment(project.id)}>Submit Comment</button>
+                  <button onClick={() => raiseHand(project.id)}>Raise Hand</button>
+                </div>
+              </div>
             </div>
           </div>
         ))
       )}
 
-      {/* ===================== */}
-      {/* CELEBRATION WALL */}
-      {/* ===================== */}
-      <hr style={{ margin: "30px 0" }} />
+      <hr style={{ margin: "30px 0", borderColor: "#222" }} />
 
-      <h2 style={{ color: "green" }}>🎉 Celebration Wall</h2>
+      <h2 style={{ color: "#00e676" }}>Celebration Wall</h2>
 
       {completedProjects.length === 0 ? (
         <p>No completed projects yet</p>
@@ -154,21 +143,18 @@ function Home() {
         completedProjects.map((project) => (
           <div
             key={project.id}
+            className="card"
             style={{
-              border: "2px solid green",
-              margin: "10px",
-              padding: "10px",
-              background: "black",
-              color: "white",
+              border: "2px solid #00c853",
+              backgroundColor: "#101010",
             }}
           >
-            <h3>🏆 {project.title}</h3>
+            <h3>{project.title}</h3>
             <p>{project.description}</p>
 
             <p>
               <strong>Completed by:</strong> {project.userEmail}
             </p>
-
             <p>
               <strong>Collaborators:</strong>{" "}
               {project.collaborators?.length || 0}

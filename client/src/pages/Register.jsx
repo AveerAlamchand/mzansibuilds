@@ -22,7 +22,7 @@ function Register() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container page">
       <div className="card">
         <h2>Register</h2>
 
