@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 function Home() {
   const [projects, setProjects] = useState([]);
   const [commentInputs, setCommentInputs] = useState({});
+  const [showMessage, setShowMessage] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -69,6 +70,24 @@ function Home() {
 
   return (
     <div className="container page">
+    {!token && (
+    <div className="card" style={{ marginBottom: "20px" }}>
+      <button onClick={() => setShowMessage(!showMessage)}>
+        Click Me
+      </button>
+
+      {showMessage && (
+        <p style={{ marginTop: "15px", lineHeight: "1.6" }}>
+          It has come to my attention that this graduate program is for people
+          ready to work in 2026. Unfortunately, I am still an honours student and
+          therefore will not be able to continue with the application process.
+          Nevertheless, I enjoyed working on this MzansiBuilds project and I hope
+          you enjoy what I managed to create. Thank you for this opportunity and I
+          hope I am considered for any future graduate program and positions.
+        </p>
+      )}  
+    </div>
+    )}
       <h2 style={{ color: "#00e676" }}>Live Feed</h2>
 
       {projects.length === 0 ? (
@@ -164,6 +183,7 @@ function Home() {
       )}
     </div>
   );
+  
 }
 
 export default Home;
