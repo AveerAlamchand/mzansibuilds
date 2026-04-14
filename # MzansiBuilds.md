@@ -1,0 +1,149 @@
+\# MzansiBuilds
+
+This is my MzansiBuilds Derivco Code Skills Quest Stage 2 assessment.
+
+
+
+It allows developers to share what they are building, track progress, and collaborate with others in real time.
+
+
+
+\## Features
+
+You are able to:
+
+\- Create and manage an account
+
+\- Post projects they are currently building
+
+\- Share project progress using stages such as idea, in progress, and completed
+
+\- Comment on other developers’ projects
+
+\- Raise collaboration requests on projects
+
+\- View a live feed of all projects
+
+\- View a celebration wall of completed projects
+
+
+
+\## Tech Stack
+
+
+
+\### Frontend:- React
+
+\- Vite
+
+\- JavaScript
+
+\- Fetch API
+
+\- Custom CSS
+
+
+
+\### Backend:
+
+\- Node.js
+
+\- Express.js
+
+\- JSON Web Token (JWT)
+
+\- CORS middleware
+
+
+
+\## Project Structure
+
+
+MzansiBuilds/
+
+├── client/   # React frontend
+
+├── server/   # Express backend
+
+└── README.md
+
+
+## How to set up the project
+
+
+
+\### Prerequisites
+
+
+
+Before running the project, make sure you have:
+
+
+
+\-Node.js installed
+
+\-npm installed
+
+\-A code editor such as VS Code
+
+\-A browser such as Chrome or Edge
+
+
+
+
+
+\### Clone the repository
+
+Open your command prompt and go to your desired directory. Once 
+you have located it, run the following commands:
+(i) git clone https://github.com/AveerAlamchand/mzansibuilds.git
+(ii) cd MzansiBuilds
+
+
+\### Install the backend dependencies
+
+(i)cd server
+(ii) npm install
+
+
+\### Install frontend dependencies
+Open a second terminal and naviage to the MzansiBuilds directory again. Make sure you are in the MzansiBuilds directory, then run the following commands.
+(i) cd client
+(ii) npm install
+
+
+
+
+
+\## How to Run the Project
+
+
+
+\### 1. Start the backend server
+
+In your first terminal for the backend (inside the server directory), run the following command: 
+
+node server.js
+
+The backend runs on: http://localhost:5000
+
+
+
+\### 2. Start the frontend
+
+In your second terminal for the frontend (inside the client directory), run the following command: 
+
+npm run dev
+
+The frontend runs on: http://localhost:5173
+
+How to use the app:
+
+1. Open the frontend in your browser using the url: http://localhost:5173
+2. Register a new user account
+3. Log in with the registered details
+4. Create a new project
+5. View projects in live feed
+6. You are able to comment or raise collaboration requests.
+
+
