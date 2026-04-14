@@ -4,21 +4,18 @@ import { useEffect, useState } from "react";
 function Navbar() {
   const navigate = useNavigate();
 
-  // ADDED: SINGLE SOURCE OF TRUTH
+  // ADDED: SINGLE SOURCE OF TRUTH FOR AUTH STATUS
   const getToken = () => localStorage.getItem("token");
 
   const [token, setToken] = useState(getToken());
 
-  // ADDED: LISTEN FOR LOGIN/LOGOUT CHANGES
+  // ADDED: LISTEN FOR LOGIN AND LOGOUT CHANGES
   useEffect(() => {
     const syncAuth = () => {
       setToken(getToken());
     };
 
-    // ADDED: listen to custom auth event (FIXES YOUR ISSUE)
     window.addEventListener("authChange", syncAuth);
-
-    // still useful
     window.addEventListener("focus", syncAuth);
 
     return () => {
@@ -27,6 +24,7 @@ function Navbar() {
     };
   }, []);
 
+  // ADDED: LOGOUT HANDLER
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -34,40 +32,28 @@ function Navbar() {
   };
 
   return (
-    <nav style={{ padding: "10px", background: "black" }}>
-      <h2 style={{ color: "white" }}>MzansiBuilds</h2>
+    <nav className="navbar">
+      <h2 style={{ color: "#00c853", margin: 0 }}>MzansiBuilds</h2>
 
-      <div style={{ marginTop: "10px" }}>
-        <Link to="/" style={{ color: "green", marginRight: "10px" }}>
-          Home
-        </Link>
+      <div className="nav-links">
+        <Link to="/">Home</Link>
 
         {!token && (
           <>
-            <Link to="/login" style={{ color: "green", marginRight: "10px" }}>
-              Login
-            </Link>
-
-            <Link to="/register" style={{ color: "green", marginRight: "10px" }}>
-              Register
-            </Link>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
           </>
         )}
 
         {token && (
           <>
-            <Link to="/create" style={{ color: "green", marginRight: "10px" }}>
-              Create Project
-            </Link>
-
+            <Link to="/create">Create Project</Link>
             <button
               onClick={handleLogout}
               style={{
-                marginLeft: "10px",
                 background: "black",
                 color: "red",
                 border: "1px solid red",
-                cursor: "pointer",
               }}
             >
               Logout

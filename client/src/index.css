@@ -5,14 +5,14 @@ body {
   color: white;
 }
 
-/* LINKS */
 a {
   text-decoration: none;
   color: #00c853;
 }
 
-/* INPUTS */
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   max-width: 400px;
   padding: 10px;
@@ -22,9 +22,9 @@ input, textarea, select {
   background-color: #111;
   color: white;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
-/* BUTTONS */
 button {
   padding: 8px 12px;
   border: none;
@@ -39,27 +39,44 @@ button:hover {
   background-color: #00e676;
 }
 
-/* CARD STYLE */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .card {
   border: 1px solid #222;
   background-color: #121212;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 10px;
+  color: white;
 }
 
-/* NAVBAR */
+.card h3,
+.card h4,
+.card h2 {
+  color: #00e676;
+  margin-top: 0;
+}
+
 .navbar {
   background-color: #000;
-  padding: 15px;
+  padding: 15px 20px;
   border-bottom: 1px solid #222;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 .nav-links {
   display: flex;
   gap: 15px;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-links button {
+  margin-top: 0;
 }

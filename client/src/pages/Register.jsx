@@ -5,6 +5,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  // ADDED: HANDLE REGISTER SUBMISSION
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,33 +23,33 @@ function Register() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Register</h2>
+      <div className="card">
+        <h2>Register</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-        <div style={{ marginTop: "10px" }}>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-        <button style={{ marginTop: "10px" }} type="submit">
-          Register
-        </button>
-      </form>
+          <button type="submit">Register</button>
+        </form>
 
-      {message && <p>{message}</p>}
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 }

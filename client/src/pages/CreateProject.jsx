@@ -7,18 +7,16 @@ function CreateProject() {
   const [support, setSupport] = useState("");
   const [message, setMessage] = useState("");
 
+  // ADDED: HANDLE PROJECT SUBMISSION
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ADDED: GET TOKEN FROM LOGIN (SECURITY REQUIREMENT)
     const token = localStorage.getItem("token");
 
     const response = await fetch("http://localhost:5000/projects", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-
-        // ADDED: SEND TOKEN TO BACKEND
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ title, description, stage, support }),
@@ -30,45 +28,47 @@ function CreateProject() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Create Project</h2>
+      <div className="card">
+        <h2>Create Project</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Project Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              placeholder="Project Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
 
-        <br /><br />
+          <div>
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          <div>
+            <select value={stage} onChange={(e) => setStage(e.target.value)}>
+              <option value="idea">Idea</option>
+              <option value="in progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
 
-        <br /><br />
+          <div>
+            <input
+              placeholder="Support needed"
+              value={support}
+              onChange={(e) => setSupport(e.target.value)}
+            />
+          </div>
 
-        <select value={stage} onChange={(e) => setStage(e.target.value)}>
-          <option value="idea">Idea</option>
-          <option value="in progress">In Progress</option>
-          <option value="completed">Completed</option>
-        </select>
+          <button type="submit">Create Project</button>
+        </form>
 
-        <br /><br />
-
-        <input
-          placeholder="Support needed"
-          value={support}
-          onChange={(e) => setSupport(e.target.value)}
-        />
-
-        <br /><br />
-
-        <button type="submit">Create Project</button>
-      </form>
-
-      {message && <p>{message}</p>}
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 }
