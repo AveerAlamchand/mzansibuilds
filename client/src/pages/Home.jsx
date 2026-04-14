@@ -78,12 +78,19 @@ function Home() {
 
       {showMessage && (
         <p style={{ marginTop: "15px", lineHeight: "1.6" }}>
-          It has come to my attention that this graduate program is for people
-          ready to work in 2026. Unfortunately, I am still an honours student and
-          therefore will not be able to continue with the application process.
+          Dear Derivco Hiring Team,
+          
+          I trust you are well, It has come to my attention that this graduate program 
+          is for people ready to work in 2026. Unfortunately, I am still an honours student 
+          and therefore will not be able to continue with the application process.
           Nevertheless, I enjoyed working on this MzansiBuilds project and I hope
           you enjoy what I managed to create. Thank you for this opportunity and I
           hope I am considered for any future graduate program and positions.
+
+          Thank you for your time and consideration.
+
+          Kind regards,
+          Aveer Alamchand
         </p>
       )}  
     </div>
